@@ -1,0 +1,37 @@
+version: 2
+
+models:
+  - name: dbt_events
+    columns:
+      - name: event_timestamp
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: ">= dbt_run_started_at"
+      - name: dbt_invocation_id
+        tests:
+          - not_null
+      - name: dbt_run_started_at
+        tests:
+          - not_null
+      - name: dbt_version
+        tests:
+          - not_null
+      - name: event_params
+        tests:
+          - dbt_utils.at_least_one
+      - name: event_type
+        tests:
+          - accepted_values:
+              values:
+                - "initialize"
+                - "start_dbt"
+                - "start_dbt_event_view"
+                - "end_dbt_event_view"
+                - "end_dbt"
+
+      - name: git_hash
+        tests:
+          - accepted_values:
+              values:
+                - "{{ env_var('GIT_HASH') }}"

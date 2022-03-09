@@ -1,0 +1,31 @@
+name: 'dbt_events_integration_tests'
+version: '0.0.0'
+config-version: 2
+
+profile: 'integration_tests'
+
+vars:
+  dbt_events:
+    schema: public
+    on_schema_change: append_new_columns
+
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+target-path: "target"
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+quoting:
+  identifier: false
+  schema: false
+
+on-run-start:
+  - "{{ dbt_events.record('start_dbt') }}"
+on-run-end:
+  - "{{ dbt_events.record('end_dbt', on_run_end_params(results)) }}"

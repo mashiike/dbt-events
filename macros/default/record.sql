@@ -48,7 +48,7 @@
 
 {%- macro default__get_event_record_sql(event_type, params) -%}
     {%- set serialized_event_params = dbt_events.serialize_event_params(params) %}
-    {{ return(dbt_events.event_record_sql(event_type, serialized_event_params)) }}
+    {{ return(event_record_sql(event_type, serialized_event_params)) }}
 {%- endmacro %}
 
 {%- macro event_record_sql(event_type, serialized_event_params) %}
