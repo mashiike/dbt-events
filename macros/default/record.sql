@@ -67,5 +67,6 @@
             {{ dbt_utils.safe_cast("'"~model_unique_id~"'", dbt_utils.type_string()) }} as model_unique_id
         {%- else %}
             {{ dbt_utils.safe_cast("NULL", dbt_utils.type_string()) }} as model_unique_id
-        {%- endif %}
+        {%- endif %},
+        {{ dbt_utils.safe_cast("'"~dbt_version~"'",dbt_utils.type_string()) }} as dbt_version
 {%- endmacro %}
